@@ -2,6 +2,8 @@ import { TraceIdHandler } from '../utils';
 import { ILogger, ILoggerOptions, LoggerType } from '../types';
 import { getLogger } from './logger.factory';
 import { LoggerMiddleware } from '../middlewares';
+import speedCache from '../db';
+import { LOGGER_OPTIONS } from '../constants';
 
 export class LoggerService {
   private logger: ILogger;
@@ -12,6 +14,7 @@ export class LoggerService {
     },
   ) {
     this.logger = getLogger(options);
+    speedCache.set(LOGGER_OPTIONS, options);
   }
 
   info(...optionalParams: any[]): void {

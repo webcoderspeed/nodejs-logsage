@@ -1,4 +1,4 @@
-import { EXECUTION_START_TIME } from '../constants';
+import { EXECUTION_LOG_CALLER, EXECUTION_LOG_START_TIME } from '../constants';
 import { TraceIdHandler } from './trace-handler.util';
 
 function formatLogMessage(...optionalParams: any[]) {
@@ -7,15 +7,20 @@ function formatLogMessage(...optionalParams: any[]) {
   let traceId = null;
   let restData = [];
   let executionTime = null;
+  let executionCallerName = null;
 
   for (const item of optionalParams) {
     if (item && typeof item === 'object') {
       if (TRACE_ID in item) {
         traceId = item[TRACE_ID];
       }
-      if (EXECUTION_START_TIME in item) {
+      if (EXECUTION_LOG_START_TIME in item) {
         const currentTime = new Date().getTime();
-        executionTime = currentTime - item[EXECUTION_START_TIME];
+        executionTime = currentTime - item[EXECUTION_LOG_START_TIME];
+      }
+
+      if (EXECUTION_LOG_CALLER in item) {
+        executionCallerName = item[EXECUTION_LOG_CALLER];
       }
     }
     restData.push(item);
@@ -27,12 +32,12 @@ function formatLogMessage(...optionalParams: any[]) {
 
   let logMessage = formattedData;
 
-  if (traceId) {
-    logMessage = `${traceId}:${logMessage}`;
+  if (executionTime !== null) {
+    logMessage = `[${executionCallerName ? executionCallerName + ':' : ''}${executionTime} ms]:${logMessage}`;
   }
 
-  if (executionTime !== null) {
-    logMessage = `[EXECUTION_TIME] = ${executionTime}ms : ${logMessage}`;
+  if (traceId) {
+    logMessage = `[${traceId}]:${logMessage}`;
   }
 
   return logMessage;
