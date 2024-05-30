@@ -5,20 +5,16 @@ import { LOGGER_OPTIONS } from '../constants';
 import { LoggerType } from '../types';
 
 export class RequestMiddleware {
-  private readonly options = speedCache.get(LOGGER_OPTIONS);
-
-  private logger = new LoggerService(
-    this.options ?? {
-      type: LoggerType.PINO,
-    },
-  );
-
-  constructor() {
-    this.use = this.use.bind(this);
-  }
-
   use(req: Request, res: Response, next: NextFunction) {
-    this.logger.info({
+    const options = speedCache.get(LOGGER_OPTIONS);
+
+    const logger = new LoggerService(
+      options ?? {
+        type: LoggerType.PINO,
+      },
+    );
+
+    logger.info({
       method: req?.method,
       url: req?.url,
       headers: req?.headers,
