@@ -1,2 +1,10 @@
-export { LoggerMiddleware } from './logger.middleware';
-export { RequestMiddleware } from './request.middleware';
+import { Application } from 'express';
+import { LoggerMiddleware } from './logger.middleware';
+import { RequestMiddleware } from './request.middleware';
+
+export { LoggerMiddleware };
+
+export const logsageMiddleware = (app: Application) => {
+  app.use(new LoggerMiddleware().use);
+  app.use(new RequestMiddleware().use);
+};

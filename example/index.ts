@@ -1,14 +1,15 @@
 import express from 'express';
 import {
   LoggerService,
-  LoggerMiddleware,
   LoggerType,
   EXECUTION_LOG_CALLER,
   EXECUTION_LOG_START_TIME,
-  RequestMiddleware,
+  logsageMiddleware,
 } from '../src';
 
 const app = express();
+
+logsageMiddleware(app);
 
 const logger = new LoggerService({
   type: LoggerType.PINO,
@@ -38,9 +39,6 @@ const logger = new LoggerService({
     },
   },
 });
-
-app.use(new LoggerMiddleware().use);
-app.use(new RequestMiddleware().use);
 
 let count = 0;
 
