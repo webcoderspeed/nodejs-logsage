@@ -33,7 +33,7 @@ function formatLogMessage(...optionalParams: any[]) {
   let logMessage = formattedData;
 
   if (executionTime !== null) {
-    logMessage = `[${executionCallerName ? executionCallerName + ':' : ''}${executionTime} ms]:${logMessage}`;
+    logMessage = `[${executionCallerName ? executionCallerName + ': ' : ''}${executionTime} ms]:${logMessage}`;
   }
 
   if (traceId) {

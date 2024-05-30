@@ -1,4 +1,4 @@
-import { TRACE_ID } from "../constants";
+import { TRACE_ID } from '../constants';
 
 export class TraceIdHandler {
   private static traceId: string = TRACE_ID;

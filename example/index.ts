@@ -5,6 +5,7 @@ import {
   EXECUTION_LOG_CALLER,
   EXECUTION_LOG_START_TIME,
   logsageMiddleware,
+  logExecutionTime,
 } from '../src';
 
 const app = express();
@@ -60,3 +61,36 @@ app.get('/', (req, res) => {
 });
 
 app.listen(1337, () => logger.info(`Listening on port: 1337`));
+
+// Example 1: Decorator applied to class
+@logExecutionTime
+class A {
+  sayHello() {
+    logger.info('Hello');
+  }
+
+  helloWorld() {
+    logger.info('World');
+  }
+}
+
+// Example 2: Decorator applied to method
+class B {
+  @logExecutionTime
+  sayHello() {
+    logger.info('Hello');
+  }
+
+  helloWorld() {
+    logger.info('World');
+  }
+}
+
+// Testing the decorators
+const a = new A();
+a.sayHello();
+a.helloWorld();
+
+const b = new B();
+b.sayHello();
+b.helloWorld();

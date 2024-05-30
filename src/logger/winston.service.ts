@@ -2,7 +2,7 @@ import { createLogger, transports, format } from 'winston';
 import { ILogger, ILoggerOptions } from '../types';
 import formatLogMessage from '../utils/format-log-message.util';
 
-const { combine, timestamp, printf, colorize, } = format;
+const { combine, timestamp, printf, colorize } = format;
 
 export class WinstonService implements ILogger {
   private readonly logger;
