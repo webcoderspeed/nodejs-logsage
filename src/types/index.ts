@@ -5,6 +5,7 @@ export interface ILogger {
   info(optionalParams?: any[]): void;
   warn(optionalParams?: any[]): void;
   error(optionalParams?: any[]): void;
+  debug(optionalParams?: any[]): void;
 }
 
 export enum LoggerType {

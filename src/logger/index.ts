@@ -5,7 +5,7 @@ import { LoggerMiddleware } from '../middlewares';
 import speedCache from '../db';
 import { LOGGER_OPTIONS } from '../constants';
 
-export class LoggerService {
+export class LoggerService implements ILogger {
   private logger: ILogger;
 
   constructor(
@@ -27,6 +27,10 @@ export class LoggerService {
 
   error(...optionalParams: any[]): void {
     this.logWithRequestId('error', ...optionalParams);
+  }
+
+  debug(...optionalParams: any[]): void {
+    this.logWithRequestId('debug', ...optionalParams);
   }
 
   private addRequestId(...optionalParams: any[]) {

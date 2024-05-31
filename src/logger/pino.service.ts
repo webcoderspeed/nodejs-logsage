@@ -34,4 +34,9 @@ export class PinoService implements ILogger {
     const formatedMessage = formatLogMessage(...optionalParams);
     this.logger.error(formatedMessage);
   }
+
+  debug(...optionalParams: any[]): void {
+    const formatedMessage = formatLogMessage(...optionalParams);
+    this.logger.debug(formatedMessage);
+  }
 }
