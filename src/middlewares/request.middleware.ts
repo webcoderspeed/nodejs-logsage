@@ -14,12 +14,21 @@ export class RequestMiddleware {
       },
     );
 
-    logger.info({
-      method: req?.method,
-      url: req?.url,
-      headers: req?.headers,
-      query: req?.query,
-      body: req?.body,
+    const startTime = performance.now();
+
+    res.on('finish', () => {
+      const endTime = performance.now();
+      const responseTimeInMs = (endTime - startTime)?.toFixed(3);
+
+      logger.info({
+        method: req.method,
+        url: req.url,
+        headers: req.headers,
+        query: req.query,
+        body: req.body,
+        responseTime: `${responseTimeInMs} ms`,
+        statusCode: res.statusCode,
+      });
     });
 
     next();

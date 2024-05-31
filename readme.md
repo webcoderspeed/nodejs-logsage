@@ -149,4 +149,4 @@ If you have suggestions for improvements, bug reports, or other contributions, p
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the `MIT` License.
