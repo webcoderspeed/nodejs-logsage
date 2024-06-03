@@ -13,17 +13,22 @@ function formatLogMessage(...optionalParams: any[]) {
     if (item && typeof item === 'object') {
       if (TRACE_ID in item) {
         traceId = item[TRACE_ID];
+        delete item[TRACE_ID];
       }
       if (EXECUTION_LOG_START_TIME in item) {
         const currentTime = new Date().getTime();
         executionTime = currentTime - item[EXECUTION_LOG_START_TIME];
+        delete item[EXECUTION_LOG_START_TIME];
       }
-
       if (EXECUTION_LOG_CALLER in item) {
         executionCallerName = item[EXECUTION_LOG_CALLER];
+        delete item[EXECUTION_LOG_CALLER];
       }
     }
-    restData.push(item);
+
+    if (Object?.keys(item)?.length) {
+      restData.push(item);
+    }
   }
 
   const formattedData = restData
