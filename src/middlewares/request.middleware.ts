@@ -6,19 +6,23 @@ import { LoggerType } from '../types';
 
 export class RequestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
-    const options = speedCache.get(LOGGER_OPTIONS);
+    const getLogger = () => {
+      const options = speedCache.get(LOGGER_OPTIONS);
 
-    const logger = new LoggerService(
-      options ?? {
-        type: LoggerType.PINO,
-      },
-    );
+      return new LoggerService(
+        options ?? {
+          type: LoggerType.PINO,
+        },
+      );
+    };
 
     const startTime = performance.now();
 
     res.on('finish', () => {
       const endTime = performance.now();
       const responseTimeInMs = (endTime - startTime)?.toFixed(3);
+
+      const logger = getLogger();
 
       logger.info({
         method: req?.method,

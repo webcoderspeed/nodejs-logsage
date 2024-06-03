@@ -6,38 +6,40 @@ import {
   EXECUTION_LOG_START_TIME,
   logsageMiddleware,
   logExecutionTime,
+  transports,
+  format,
 } from '../src';
+
+const { colorize, printf, combine, timestamp } = format;
 
 const app = express();
 
 logsageMiddleware(app);
 
 const logger = new LoggerService({
-  type: LoggerType.PINO,
+  type: LoggerType.WINSTON,
   options: {
-    transport: {
-      targets: [
-        {
-          target: 'pino-pretty',
-          options: {
-            destination: 'api.log',
-            singleLine: true,
-            colorize: false,
-            levelFirst: false,
-            translateTime: 'dd-mm-yyyy hh:mm:ss TT',
-          },
-        },
-        {
-          target: 'pino-pretty',
-          options: {
-            singleLine: true,
-            colorize: true,
-            levelFirst: false,
-            translateTime: 'dd-mm-yyyy hh:mm:ss TT',
-          },
-        },
-      ],
-    },
+    level: 'debug',
+    transports: [
+      new transports.Console({
+        format: combine(
+          timestamp({
+            format: 'YYYY-MM-DDThh:mm:ss',
+          }),
+          colorize({ all: true }),
+          printf((info) => `[${info.timestamp}] ${info.level}:${info.message}`),
+        ),
+      }),
+      new transports.File({
+        filename: 'api.log',
+      }),
+    ],
+    format: combine(
+      timestamp({
+        format: 'YYYY-MM-DDThh:mm:ss',
+      }),
+      printf((info) => `[${info.timestamp}] ${info.level}:${info.message}`),
+    ),
   },
 });
 
@@ -47,7 +49,7 @@ app.get('/', (req, res) => {
   count++;
 
   const newTime = new Date().getTime();
-  logger.info('Inside app route', { count });
+  logger.error('Inside app route');
 
   setTimeout(() => {
     logger.info('Inside app route after 5s', {

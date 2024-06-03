@@ -9,7 +9,7 @@ function formatLogMessage(...optionalParams: any[]) {
   let executionTime = null;
   let executionCallerName = null;
 
-  for (const item of optionalParams) {
+  for (const item of optionalParams.filter((o) => o)) {
     if (item && typeof item === 'object') {
       if (TRACE_ID in item) {
         traceId = item[TRACE_ID];
@@ -17,7 +17,11 @@ function formatLogMessage(...optionalParams: any[]) {
       }
       if (EXECUTION_LOG_START_TIME in item) {
         const currentTime = new Date().getTime();
-        executionTime = currentTime - item[EXECUTION_LOG_START_TIME];
+        executionTime =
+          currentTime -
+          (typeof item[EXECUTION_LOG_START_TIME] === 'number'
+            ? item[EXECUTION_LOG_START_TIME]
+            : 0);
         delete item[EXECUTION_LOG_START_TIME];
       }
       if (EXECUTION_LOG_CALLER in item) {
@@ -32,6 +36,7 @@ function formatLogMessage(...optionalParams: any[]) {
   }
 
   const formattedData = restData
+    .filter((r) => r)
     .map((d) => (typeof d === 'object' ? JSON.stringify(d) : d))
     .join(' ');
 
