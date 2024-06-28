@@ -13,7 +13,6 @@ function formatLogMessage(...optionalParams: any[]) {
     if (item && typeof item === 'object') {
       if (TRACE_ID in item) {
         traceId = item[TRACE_ID];
-        delete item[TRACE_ID];
       }
       if (EXECUTION_LOG_START_TIME in item) {
         const currentTime = new Date().getTime();
@@ -22,11 +21,9 @@ function formatLogMessage(...optionalParams: any[]) {
           (typeof item[EXECUTION_LOG_START_TIME] === 'number'
             ? item[EXECUTION_LOG_START_TIME]
             : 0);
-        delete item[EXECUTION_LOG_START_TIME];
       }
       if (EXECUTION_LOG_CALLER in item) {
         executionCallerName = item[EXECUTION_LOG_CALLER];
-        delete item[EXECUTION_LOG_CALLER];
       }
     }
 
